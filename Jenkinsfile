@@ -1,6 +1,6 @@
 @Library('github.com/chmouel/osio-pipeline-helpers@master')	
-def arg = null	
+def defaultStages = ["run"]	
  	 
 osio {	
-  stages = ['run']
+  stages = defaultStages
 }
