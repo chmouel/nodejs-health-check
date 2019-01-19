@@ -1,10 +1,21 @@
+@Library('github.com/chmouel/osio-pipeline@jr') _
 
-node("launchpad-nodejs") {
-  checkout scm
-  stage("Build") {
-    sh "npm install"
+
+osio {
+  config runtime: 'node'
+
+  ci {
+    def res = processTemplate()
+    build resources: res
   }
-  stage("Deploy") {
-    sh "npm run openshift"
+
+  cd {
+    def res = processTemplate(params: [
+      RELEASE_VERSION: "1.0.${env.BUILD_NUMBER}"
+    ])
+
+    build resources: res
+    deploy resources: res, env: 'stage'
+    deploy resources: res, env: 'run'
   }
 }
